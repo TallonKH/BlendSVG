@@ -7,6 +7,22 @@ from mathutils import *
 
 BpyObject = bpy.types.Object
 
+# Entry point when running as an in-Blender script. 
+# Change this for your purposes.
+def run():
+    # Change these settings to match your laser cutter's desired settings.
+    params = SvgParams()
+    params.line_width = 0.001
+    params.line_color = "red"
+
+    # Render the current active scene as an SVG.
+    svg = scene_to_svg(bpy.context.scene, params)
+    svg_as_str = str(svg)
+
+    # Write the SVG to a file.
+    with open("/Users/me/Desktop/svg_test.svg", "w") as svg_out:
+        svg_out.write(svg_as_str)
+
 # Representation of a point on the canvas.
 class CanvasPoint(NamedTuple):
     x: float
@@ -182,9 +198,4 @@ def scene_to_svg(scene: bpy.types.Scene, params=SvgParams) -> svglib.SVG:
     )
 
 if __name__ == '__main__':
-    params = SvgParams()
-
-    with open("/Users/me/Desktop/svg_test.svg", "w") as svg_out:
-        svg = scene_to_svg(bpy.context.scene, params)
-        svg_str = str(svg)
-        svg_out.write(svg_str)
+    run()
